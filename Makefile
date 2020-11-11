@@ -1,37 +1,44 @@
-CC = g++
-Cflag = -Wall -g 
+CC = gcc
+CFLAG = -Wall -g 
 
 
-make mymaths:
-	
-	ar rc libmyMath.a main.o myMath.o
-	ranlib libmyMath.a
-	
-make mymathd:
-	ifndef libmyMath
-	$(CC) $(Cflag) *c -c -fPIC
-	$(CC) *.o -shared -o libmyMath.so
-	endif
-make maind : main.o basicMath.o power.o
-	$(CC) $(Cflag) main.o basicMath.o power.o -o maind
+make maind : main.o myMath.o
+	$(CC) $(CFLAG) -o maind main.o libmyMathd.a
 	$(CC) maind.o -libmyMathd -o maind
-make mains : main.o basicMath.o power.o
-	$(CC) $(Cflag) main.o basicMath.o power.o -o mains
-	
-make all: maind mains mymathd mymaths
-.PHONY: clean all
+make mains : main.o myMath.o
+	$(CC) $(CFLAG) -o mains main.o libmyMaths.so 
+
+make libmyMathd: libmyMathd.a
+	$(CC) $(CFLAG) -c libmyMathd.a
+
+make libmyMaths: libmyMaths.so
+	$(CC) $(CFLAG) -c libmyMathd.so
+
+libmyMathd.a: myMath.o
+	ar -rcs libmyMathd.a myMath.o
+libmyMaths.so: myMath.o
+	$(CC) $(CFLAG) -shared -o libmyMaths.so myMath.o
 
 main.o: basicMath.c power.c main.c
-	$(CC) $(Cflag) main.c -c
+	$(CC) $(CFLAG) -c main.c 
 
 basicMath.o: basicMath.c basicMath.h
-	$(CC) $(Cflag) basicMath.c basicMath.h
+	$(CC) $(CFLAG) basicMath.c basicMath.h
 	
 power.o: power.c power.h
-	$(CC) $(Cflag) power.c basicMath.h
-myMath.o : myMath.c myMath.h
-	$(CC) $(Cflag) myMath.c myMath.h
+	$(CC) $(CFLAG) power.c basicMath.h
 
+myMath.o : myMath.c myMath.h
+	$(CC) $(CFLAG) myMath.c myMath.h
+
+libmyMathd.o: myMath.c myMath.h
+	$(CC) $(CFLAG) -c myMath.c 
+
+libmyMath.o: myMath.c myMath.h
+	$(CC) $(CFLAG) -c myMath.c 
+	
 make clean:
 	rm -f *.o *.a *.so
 	echo clean done
+make all: maind mains mymathd mymaths
+.PHONY: clean all
