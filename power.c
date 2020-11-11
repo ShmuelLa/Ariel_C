@@ -1,6 +1,4 @@
 #include "myMath.h"
-#include "power.h"
-#define e 2.7182
 double Exponent (int x) {
     double ans = 1;
     if (x== 0) {

@@ -1,44 +1,34 @@
 CC = gcc
 CFLAG = -Wall -g 
+AR = ar
 
 
-make maind : main.o myMath.o
-	$(CC) $(CFLAG) -o maind main.o libmyMathd.a
-	$(CC) maind.o -libmyMathd -o maind
-make mains : main.o myMath.o
-	$(CC) $(CFLAG) -o mains main.o libmyMaths.so 
+mymaths: libmyMath.a
 
-make libmyMathd: libmyMathd.a
-	$(CC) $(CFLAG) -c libmyMathd.a
+mymathd: libmyMath.so
 
-make libmyMaths: libmyMaths.so
-	$(CC) $(CFLAG) -c libmyMathd.so
+mains:main.o libmyMath.a
+	$(CC) $(CFLAG) -o mains main.o libmyMath.a
 
-libmyMathd.a: myMath.o
-	ar -rcs libmyMathd.a myMath.o
-libmyMaths.so: myMath.o
-	$(CC) $(CFLAG) -shared -o libmyMaths.so myMath.o
+maind:main.o 
+	$(CC) $(CFLAG) -o maind main.o ./libmyMath.so 
 
-main.o: basicMath.c power.c main.c
+libmyMath.so:power.o basicMath.o myMath.h
+	$(CC) $(CFLAG) -shared -o libmyMath.so power.o basicMath.o
+
+libmyMath.a:power.o basicMath.o myMath.h
+	$(AR) -rcs libmyMath.a power.o basicMath.o
+
+main.o:main.c myMath.h
 	$(CC) $(CFLAG) -c main.c 
 
-basicMath.o: basicMath.c basicMath.h
-	$(CC) $(CFLAG) basicMath.c basicMath.h
+basicMath.o:basicMath.c myMath.h
+	$(CC) $(CFLAG) -fPIC -c basicMath.c 
 	
-power.o: power.c power.h
-	$(CC) $(CFLAG) power.c basicMath.h
-
-myMath.o : myMath.c myMath.h
-	$(CC) $(CFLAG) myMath.c myMath.h
-
-libmyMathd.o: myMath.c myMath.h
-	$(CC) $(CFLAG) -c myMath.c 
-
-libmyMath.o: myMath.c myMath.h
-	$(CC) $(CFLAG) -c myMath.c 
-	
-make clean:
-	rm -f *.o *.a *.so
+power.o:power.c myMath.h
+	$(CC) $(CFLAG) -fPIC -c power.c 
+clean:
+	rm -f *.o *.a *.so mains maind
 	echo clean done
-make all: maind mains mymathd mymaths
+all:mymathd mymaths maind mains 
 .PHONY: clean all
