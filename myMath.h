@@ -1,4 +1,4 @@
-#define e 2.718
+#define e 2.7182
 #ifndef myMath
     #define myMath
     float add(float x, float y);
