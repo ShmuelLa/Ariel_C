@@ -1,5 +1,4 @@
 #include "myMath.h"
-#include "power.h"
 #define e 2.7182
 double Exponent (int x) {
     double ans = 1;
@@ -40,4 +39,16 @@ double Power (double x , int y) {
         return 1/ans;
     }
     return ans;
+}
+float add (float x, float y) {
+    return x+y;
+}
+float sub (float x, float y) {
+    return x-y;
+}
+double mul (double x, int y) {
+    return y*x;
+}
+double div(double x, int y){
+    return x/y;
 }
