@@ -3,7 +3,8 @@
 int main(){
 
     double ans1,ans2,ans3,x;
-    scanf("Please enter a real number: %lf.4 \n", &x);
+    printf("Please enter a real number: ");
+    scanf("%lf.4 \n", &x);
     ans1 = Exponent(x);
     ans2 = Power(x,3);
     ans3 = sub(add(ans1,ans2),2.0);

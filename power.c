@@ -1,4 +1,5 @@
 #include "myMath.h"
+
 double Exponent (int x) {
     double ans = 1;
     if (x== 0) {
@@ -18,6 +19,7 @@ double Exponent (int x) {
     }
     return ans;
 }
+
 double Power (double x , int y) {
     double ans = 1;
     if (y == 0) {

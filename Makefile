@@ -27,8 +27,11 @@ basicMath.o:basicMath.c myMath.h
 	
 power.o:power.c myMath.h
 	$(CC) $(CFLAG) -fPIC -c power.c 
+
 clean:
 	rm -f *.o *.a *.so mains maind
 	echo clean done
+
 all:mymathd mymaths maind mains 
+
 .PHONY: clean all
